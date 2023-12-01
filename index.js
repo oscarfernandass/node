@@ -20,6 +20,10 @@ require("./userDetails");
 
 const User = mongoose.model("UserInfo");
 
+app.get("/",(req,res)=>{
+  res.json("hello");
+})
+
 app.post("/post", async (req, res) => {
   const { id, name, phone, place, vehicle, required, timestamp, date, time } = req.body;
 
