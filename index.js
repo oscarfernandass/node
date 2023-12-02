@@ -1,7 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors"); // Import the cors middleware
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(cors()); // Use cors middleware to enable CORS for all origins
 
 app.use(express.json());
 
@@ -20,16 +23,11 @@ require("./userDetails");
 
 const User = mongoose.model("UserInfo");
 
-app.get("/",(req,res)=>{
-  res.json("hello");
-})
-
 app.post("/post", async (req, res) => {
   const { id, name, phone, place, vehicle, required, timestamp, date, time } = req.body;
 
   try {
     const newUser = await User.create({
-      id,
       name,
       phone,
       place,
@@ -66,6 +64,23 @@ app.get("/get", async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log("Server is Running")
-})
+app.delete("/delete/:phoneNumber", async (req, res) => {
+  const phoneNumber = req.params.phoneNumber;
+
+  try {
+    const deletedPosts = await User.deleteMany({ phone: phoneNumber });
+
+    if (deletedPosts.deletedCount > 0) {
+      res.send({ status: "ok", message: "Posts deleted successfully" });
+    } else {
+      res.status(404).send({ status: "not found", message: "No posts found for the given phone number" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ status: "error", message: "Internal Server Error" });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log("Server is Running"+PORT);
+});
