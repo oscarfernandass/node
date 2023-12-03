@@ -24,7 +24,7 @@ require("./userDetails");
 const User = mongoose.model("UserInfo");
 
 app.post("/post", async (req, res) => {
-  const { id, name, phone, place, vehicle, required, timestamp, date, time } = req.body;
+  const {name, phone, from, to, vehicle, required, timestamp, date, time } = req.body;
 
   try {
     const newUser = await User.create({
