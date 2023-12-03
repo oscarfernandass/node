@@ -30,7 +30,8 @@ app.post("/post", async (req, res) => {
     const newUser = await User.create({
       name,
       phone,
-      place,
+      from,
+      to,
       vehicle,
       required,
       timestamp,
